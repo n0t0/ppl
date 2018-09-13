@@ -76,21 +76,53 @@ print(namestr)
 
 unique_names = {namestr}
 
-import urllib.request 
+# import urllib.request 
 
-u = urllib.request.urlopen('http://finance.yahoo.com/d/quotes.csv?s={}&f=l1'.format(namestr))
-data = u.read()
-pricedata = data.split()
+# u = urllib.request.urlopen('http://finance.yahoo.com/d/quotes.csv?s={}&f=l1'.format(namestr))
+# data = u.read()
+# pricedata = data.split()
 
-for name, price in zip(unique_names, pricedata):
-    print (name, '=', price)
+# for name, price in zip(unique_names, pricedata):
+#     print (name, '=', price)
 
-prices = dict(zip(unique_names, pricedata))
+# prices = dict(zip(unique_names, pricedata))
 
-current_value = 0.0
+# current_value = 0.0
+# for holding in portfolio:
+#     current_value += holding['shares'] * prices[holding['name']]
+
+# currenct_value = sum([ holding['shares'] * prices[holding['name'] for holding in portfolio])
+
+# change = current_value - total
+
+
+#### Sorting and Grouping 
+
+def holding_name(holding):
+    return holding['name']
+
+print(portfolio[0])
+
+print(holding_name(portfolio[0]))
+
+portfolio.sort(key=holding_name)
 for holding in portfolio:
-    current_value += holding['shares'] * prices[holding['name']]
+    print(holding)
 
-currenct_value = sum([ holding['shares'] * prices[holding['name'] for holding in portfolio])
 
-change = current_value - total
+portfolio.sort(key=lambda holding: holding['basepay'])
+for holding in portfolio:
+    print(holding)
+
+
+import itertools
+
+for name, items in itertools.groupby(portfolio, key=lambda holding: holding['name']):
+    # print('NAME', name)
+    for it in items:
+        print ('    ', it)
+
+by_name = { name: list(items)
+            for name, items in itertools.groupby(portfolio, key=lambda holding: holding['name']) }
+print(by_name['ALSON LEE'])
+print(by_name['DAVID KUSHNER'])
